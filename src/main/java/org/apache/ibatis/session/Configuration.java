@@ -568,7 +568,9 @@ public class Configuration {
         return newExecutor(transaction, defaultExecutorType);
     }
 
+    //TODO
     public Executor newExecutor(Transaction transaction, ExecutorType executorType) {
+
         executorType = executorType == null ? defaultExecutorType : executorType;
         executorType = executorType == null ? ExecutorType.SIMPLE : executorType;
         Executor executor;
@@ -577,12 +579,14 @@ public class Configuration {
         } else if (ExecutorType.REUSE == executorType) {
             executor = new ReuseExecutor(this, transaction);
         } else {
+            //TODO
             executor = new SimpleExecutor(this, transaction);//默认
         }
         if (cacheEnabled) {
-            executor = new CachingExecutor(executor);
+            executor = new CachingExecutor(executor);//一级缓存
         }
-        executor = (Executor) interceptorChain.pluginAll(executor);
+        //TODO
+        executor = (Executor) interceptorChain.pluginAll(executor);//责任链模式拦截器
         return executor;
     }
 
@@ -714,6 +718,10 @@ public class Configuration {
         return incompleteMethods;
     }
 
+    /**
+     * @param id: namespace+id
+     * @return
+     */
     public MappedStatement getMappedStatement(String id) {
         return this.getMappedStatement(id, true);
     }
